@@ -1,5 +1,5 @@
 import './App.css';
-import {  useSelector } from 'react-redux';
+// import {  useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import AddCategory from './components/AddCategory';
 import HomePage from './components/HomePage';
@@ -9,8 +9,8 @@ import Header from './components/Header';
 
 function App() {
 
-  const categories = useSelector(state => state.categories.categories)
-  console.log(categories)
+  // const categories = useSelector(state => state.categories.categories)
+  // console.log(categories)
 
   return (
     <div className='container'>

@@ -1,6 +1,7 @@
 
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
     addCategoryAction, 
@@ -39,7 +40,7 @@ const AddCategory = () => {
 
     return (
         <div className='text-center'>
-            <h1>Add Category</h1>
+            <h1>Категории</h1>
             <div className='mb'>
                 {!showInput ?
                     <div>
@@ -64,7 +65,7 @@ const AddCategory = () => {
                                     onClick={() => isActive(cat.id)} 
                                     key={cat.id}>
                                         <span className={cat.isActive ? 'str active' : 'str'}>в категории {cat.category} контактов: {cat.contacts.length}</span>
-                                        <button className='btn'>добавить</button>
+                                        <Link className='btn' to='/active'>добавить контакт</Link>
                                     </div>
                                         
                     })}

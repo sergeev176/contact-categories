@@ -9,6 +9,7 @@ const defaultState =
 const ADD_CATEGORY = 'ADD_CATEGORY';
 const ADD_ACTIVE_STATE = 'ADD_ACTIVE_STATE';
 const REMOVE_ACTIVE_STATE = 'REMOVE_ACTIVE_STATE';
+const ADD_DATA = 'ADD_DATA';
 
 export const categoriesReducer = (state = defaultState, action) => {
     switch(action.type) {
@@ -24,8 +25,7 @@ export const categoriesReducer = (state = defaultState, action) => {
                     }
                 }
                 return cat
-            })
-        }
+            })}
 
         case REMOVE_ACTIVE_STATE:
             return {...state, categories: state.categories.map(cat => {
@@ -38,12 +38,23 @@ export const categoriesReducer = (state = defaultState, action) => {
                 return cat
             })}
 
+        case ADD_DATA:
+            return {...state, categories: state.categories.map(cat => {
+                if (cat.isActive) {
+                    return {
+                        ...cat,
+                        contacts: [...cat.contacts, action.payload]
+                    }
+                }
+                return cat
+            })}
         default: 
             return state;
     }
 }
 
-export const addCategoryAction = (payload) => ({ type: ADD_CATEGORY, payload})
-export const addActiveStateAction = (payload) => ({ type: ADD_ACTIVE_STATE, payload })
-export const removeActiveStateAction = (payload) => ({ type: REMOVE_ACTIVE_STATE, payload })
+export const addCategoryAction = (payload) => ({ type: ADD_CATEGORY, payload});
+export const addActiveStateAction = (payload) => ({ type: ADD_ACTIVE_STATE, payload });
+export const removeActiveStateAction = (payload) => ({ type: REMOVE_ACTIVE_STATE, payload });
+export const addDataAction = (payload) => ({ type: ADD_DATA, payload });
 
