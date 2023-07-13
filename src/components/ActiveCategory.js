@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addDataAction } from '../store/categoriesReducer';
+import { addDataAction, removeContactAction } from '../store/categoriesReducer';
 
 
 const ActiveCategory = () => {
 
     const [click, setClick] = useState(false);
+    // const [change, setChange] = useState(false);
+    
     const [nameValue, setNameValue] = useState('');
     const [surnameValue, setSurnameValue] = useState('');
     const [phoneValue, setPhoneValue] = useState('');
@@ -16,47 +18,62 @@ const ActiveCategory = () => {
 
     const categories = useSelector(state => state.categories.categories);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    let categoryName, index, list;
+    let categoryName;
+    let index;
+    let list;
 
     if (categories.length > 0) {
-        // нахожу имя активной категории
-        categoryName = categories.map(cat => cat.isActive ? cat.category : '');
-        // нахожу индекс активной категории
         index = categories.findIndex(cat => cat.isActive);
-
+        categoryName = categories[index].category;
         list = categories[index].contacts;
     }
 
-    let res = categories.length > 0 ?
-        list.length > 0 ?
-        <table className='mb'>
-            <tbody>
-                {list.map(item => {
+    let res = categories.length > 0 && list.length > 0 ?
+        <div>
+            {list.map(item => {
                     return (
-                        <>
-                            <tr className='contact' 
-                                key={item.id}>
-                                    <td>{item.name}</td> 
-                                    <td>{item.surname}</td> 
-                                    <td>{item.profession}</td> 
-                                    <td>{item.phone}</td>
-                                    <td><button className='btn' onClick={asd(item.id)}>изменить</button></td>
-                            </tr>
+                        <div className='contact' key={item.id}>
+                            <div className='inl-bl'>
+                                <span onClick={() => asd(item.id, 'name')}>{item.name} </span> 
+                                <span onClick={() => asd(item.id, 'surname')}>{item.surname} </span> 
+                                <span onClick={() => asd(item.id, 'profession')}>{item.profession} </span> 
+                                <span onClick={() => asd(item.id, 'phone')}>{item.phone} </span>
+                            </div>
+                            <div className='inl-bl'>
+                                <button className='btn' onClick={() => isChange(item.id)}>изменить </button>
+                                <button className='btn' onClick={() => removeContact(item.id)}>удалить</button>
+                            </div>
+                        </div>
                             
-                        </>
-                    )
+                    ) 
                 })}
-            </tbody>
-        </table>
-        :
-        <div>в категории {categoryName} контактов пока нет</div>
+        </div>
         :
         <div></div>
     
     function handlerClick() {
         setClick(!click);
+    }
+
+    function asd(id, prop) {
+        console.log(id + ' ' + prop)
+
+    }
+
+    function isChange(id) { // id контакта
+        list.map(item => {
+            if (item.id === id) {
+                setNameValue(item.name)
+                setSurnameValue(item.surname)
+                setProfessionValue(item.profession)
+                setPhoneValue(item.phone)
+            }
+            return item
+        })
+        // dispatch(removeContactAction(id));
+        setClick(true)
     }
 
     function saveData() {
@@ -76,9 +93,8 @@ const ActiveCategory = () => {
         }
     }
 
-    function asd(id) {
-        console.log('click')
-        console.log(categoryName + ' ' + id)
+    function removeContact(id) {
+        dispatch(removeContactAction(id));
     }
 
     let contactField = (
@@ -87,7 +103,7 @@ const ActiveCategory = () => {
             <p>фамилия: <input value={surnameValue} onChange={(e) => setSurnameValue(e.target.value)} /></p>
             <p>профессия: <input value={professionValue} onChange={(e) => setProfessionValue(e.target.value)} /></p>
             <p>телефон: <input value={phoneValue} onChange={(e) => setPhoneValue(e.target.value)} /></p>
-            <button className='btn' onClick={saveData}>добавить</button>
+            <button className='btn' onClick={saveData} onBlur={saveData}>сохранить</button>
         </div>
     )
 
