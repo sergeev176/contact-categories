@@ -8,17 +8,28 @@ import { addDataAction, removeContactAction } from '../store/categoriesReducer';
 
 const ActiveCategory = () => {
 
-    const [click, setClick] = useState(false);
-    // const [change, setChange] = useState(false);
-    
-    const [nameValue, setNameValue] = useState('');
-    const [surnameValue, setSurnameValue] = useState('');
-    const [phoneValue, setPhoneValue] = useState('');
-    const [professionValue, setProfessionValue] = useState('');
-
     const categories = useSelector(state => state.categories.categories);
-
     const dispatch = useDispatch();
+
+    const [click, setClick] = useState(false);
+    const [value, setValue] = useState({
+        name: '',
+        surname: '',
+        phone: '',
+        profession: '',
+    })
+
+    const handleChange = (e) => {
+        const {name, value} = e.target
+        setValue((prev) => {
+            return {...prev, [name]: value}
+        }) 
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(value)
+    }
 
     let categoryName;
     let index;
@@ -34,7 +45,7 @@ const ActiveCategory = () => {
         <div>
             {list.map(item => {
                     return (
-                        <div className='contact' key={item.id}>
+                        <div className='contact flex s-b mb' key={item.id}>
                             <div className='inl-bl'>
                                 <span onClick={() => asd(item.id, 'name')}>{item.name} </span> 
                                 <span onClick={() => asd(item.id, 'surname')}>{item.surname} </span> 
@@ -42,11 +53,9 @@ const ActiveCategory = () => {
                                 <span onClick={() => asd(item.id, 'phone')}>{item.phone} </span>
                             </div>
                             <div className='inl-bl'>
-                                <button className='btn' onClick={() => isChange(item.id)}>изменить </button>
                                 <button className='btn' onClick={() => removeContact(item.id)}>удалить</button>
                             </div>
                         </div>
-                            
                     ) 
                 })}
         </div>
@@ -62,49 +71,20 @@ const ActiveCategory = () => {
 
     }
 
-    function isChange(id) { // id контакта
-        list.map(item => {
-            if (item.id === id) {
-                setNameValue(item.name)
-                setSurnameValue(item.surname)
-                setProfessionValue(item.profession)
-                setPhoneValue(item.phone)
-            }
-            return item
-        })
-        // dispatch(removeContactAction(id));
-        setClick(true)
-    }
-
-    function saveData() {
-        if (nameValue && surnameValue && professionValue && phoneValue) {
-            dispatch(addDataAction({
-                id: Date.now(),
-                name: nameValue,
-                surname: surnameValue,
-                profession: professionValue,
-                phone: phoneValue,
-            }))
-            setNameValue('');
-            setSurnameValue('');
-            setProfessionValue('');
-            setPhoneValue('');
-            setClick(!click);
-        }
-    }
-
     function removeContact(id) {
         dispatch(removeContactAction(id));
     }
 
-    let contactField = (
-        <div>
-            <p>имя: <input value={nameValue} onChange={(e) => setNameValue(e.target.value)} /></p>
-            <p>фамилия: <input value={surnameValue} onChange={(e) => setSurnameValue(e.target.value)} /></p>
-            <p>профессия: <input value={professionValue} onChange={(e) => setProfessionValue(e.target.value)} /></p>
-            <p>телефон: <input value={phoneValue} onChange={(e) => setPhoneValue(e.target.value)} /></p>
-            <button className='btn' onClick={saveData} onBlur={saveData}>сохранить</button>
-        </div>
+    let form = (
+        <form onSubmit={handleSubmit}>
+            <h3>name: </h3> <input type='text' name='name' onChange={handleChange} />
+            <h3>surname: </h3> <input type='text' name='surname' onChange={handleChange} />
+            <h3>profession: </h3> <input type='text' name='profession' onChange={handleChange} />
+            <h3>phone: </h3> <input type='text' name='phone' onChange={handleChange} />
+            <br />
+            <br />
+            <button type='submit'>submit</button>
+        </form>
     )
 
     return (
@@ -113,7 +93,11 @@ const ActiveCategory = () => {
                 {categories.length > 0 ?
                     <>
                         <h1>Категория {categoryName}</h1>
-                        <button className='btn mb' onClick={handlerClick}>добавить контакт</button>
+                        {!click ? 
+                            <button className='btn mb' onClick={handlerClick}>добавить контакт</button>
+                            :
+                            <button className='btn mb' onClick={handlerClick}>назад</button>
+                        }
                     </>
                     :
                     <>
@@ -122,13 +106,13 @@ const ActiveCategory = () => {
                     </>
                 }
                 
-            </div>
-            <div className='list'>
-                {!click ? 
-                    res
-                    :
-                    contactField
-                }
+                <div className='list'>
+                    {!click ? 
+                        res
+                        :
+                        form
+                    }
+                </div>
             </div>
         </>
     );
