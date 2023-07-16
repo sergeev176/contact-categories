@@ -6,7 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { 
     addCategoryAction, 
     addActiveStateAction,
-    removeActiveStateAction } from '../store/categoriesReducer';
+    removeActiveStateAction, 
+    removeContactAction} from '../store/categoriesReducer';
+import { removeCategoryAction } from '../store/categoriesReducer';
+import AddButton from './addButton';
 
 const AddCategory = () => {
 
@@ -29,13 +32,14 @@ const AddCategory = () => {
         setShowInput(false);
     }
 
-    function save() {
-        localStorage.setItem('categories', JSON.stringify(categories));
-    }
-
     function isActive(id) {
         dispatch(removeActiveStateAction());
         dispatch(addActiveStateAction(id));
+    }
+
+    function asd(id) {
+        dispatch(removeCategoryAction(id))
+
     }
 
     return (
@@ -45,7 +49,7 @@ const AddCategory = () => {
                 {!showInput ?
                     <div>
                         <button className='btn mr' onClick={() => setShowInput(true)}>добавить категорию</button>
-                        <button className='btn' onClick={save}>save in localStorage</button>
+                        <AddButton />
                     </div>
                     :
                     <div>
@@ -66,6 +70,7 @@ const AddCategory = () => {
                                     key={cat.id}>
                                         <span className={cat.isActive ? 'str active' : 'str'}>в категории {cat.category} контактов: {cat.contacts.length}</span>
                                         <Link className='btn' to='/active'>добавить контакт</Link>
+                                        <button className='btn' onClick={() => asd(cat.id)}>удалить категорию</button>
                                     </div>
                                         
                     })}

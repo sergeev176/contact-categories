@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-const Some = () => {
+const SomePage = () => {
     return (
-        <div>
+        <div className='text-center'>
             <h1>Some page</h1>
         </div>
     );
 }
 
-export default Some;
+export default SomePage;

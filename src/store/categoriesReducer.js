@@ -11,12 +11,16 @@ const ADD_ACTIVE_STATE = 'ADD_ACTIVE_STATE';
 const REMOVE_ACTIVE_STATE = 'REMOVE_ACTIVE_STATE';
 const ADD_DATA = 'ADD_DATA';
 const REMOVE_CONTACT = 'REMOVE_CONTACT';
+const REMOVE_CATEGORY = 'REMOVE_CATEGORY';
 
 export const categoriesReducer = (state = defaultState, action) => {
     switch(action.type) {
         case ADD_CATEGORY: 
             return {...state, categories: [...state.categories, action.payload]};
 
+        case REMOVE_CATEGORY:
+            return {...state, categories: [...state.categories.filter(cat => cat.id !== action.payload)]};
+        
         case ADD_ACTIVE_STATE:
             return {...state, categories: state.categories.map(cat => {
                 if (cat.id === action.payload) {
@@ -72,4 +76,5 @@ export const addActiveStateAction = (payload) => ({ type: ADD_ACTIVE_STATE, payl
 export const removeActiveStateAction = (payload) => ({ type: REMOVE_ACTIVE_STATE, payload });
 export const addDataAction = (payload) => ({ type: ADD_DATA, payload });
 export const removeContactAction = (payload) => ({ type: REMOVE_CONTACT, payload });
+export const removeCategoryAction = (payload) => ({ type: REMOVE_CATEGORY, payload });
 

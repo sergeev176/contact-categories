@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import AddCategory from './components/AddCategory';
 import HomePage from './components/HomePage';
 import ActiveCategory from './components/ActiveCategory';
-import Some from './components/Some';
+import SomePage from './components/SomePage';
 import Header from './components/Header';
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/add' element={<AddCategory />} />
           <Route path='/active' element={<ActiveCategory />} />
-          <Route path='/some' element={<Some />} />
+          <Route path='/some' element={<SomePage />} />
         </Routes>
       </div>
 

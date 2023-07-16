@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addDataAction, removeContactAction } from '../store/categoriesReducer';
+import AddButton from './addButton';
 
 
 const ActiveCategory = () => {
@@ -13,6 +14,7 @@ const ActiveCategory = () => {
 
     const [click, setClick] = useState(false);
     const [value, setValue] = useState({
+        
         name: '',
         surname: '',
         phone: '',
@@ -22,13 +24,16 @@ const ActiveCategory = () => {
     const handleChange = (e) => {
         const {name, value} = e.target
         setValue((prev) => {
-            return {...prev, [name]: value}
+            return {...prev, id: Date.now(), [name]: value}
         }) 
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
         console.log(value)
+        dispatch(addDataAction(value));
+        setClick(!click);
     }
 
     let categoryName;
@@ -37,6 +42,7 @@ const ActiveCategory = () => {
 
     if (categories.length > 0) {
         index = categories.findIndex(cat => cat.isActive);
+        if (index === -1) index = 0
         categoryName = categories[index].category;
         list = categories[index].contacts;
     }
@@ -60,7 +66,7 @@ const ActiveCategory = () => {
                 })}
         </div>
         :
-        <div></div>
+        <div className='text'>контактов пока нет</div>
     
     function handlerClick() {
         setClick(!click);
@@ -94,7 +100,10 @@ const ActiveCategory = () => {
                     <>
                         <h1>Категория {categoryName}</h1>
                         {!click ? 
-                            <button className='btn mb' onClick={handlerClick}>добавить контакт</button>
+                            <>
+                                <button className='btn mb mr' onClick={handlerClick}>добавить контакт</button>
+                                <AddButton />
+                            </>
                             :
                             <button className='btn mb' onClick={handlerClick}>назад</button>
                         }
