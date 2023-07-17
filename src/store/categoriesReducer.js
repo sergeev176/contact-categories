@@ -7,11 +7,13 @@ const defaultState =
     { categories: [] }
 
 const ADD_CATEGORY = 'ADD_CATEGORY';
+const REMOVE_CATEGORY = 'REMOVE_CATEGORY';
+
 const ADD_ACTIVE_STATE = 'ADD_ACTIVE_STATE';
 const REMOVE_ACTIVE_STATE = 'REMOVE_ACTIVE_STATE';
+
 const ADD_DATA = 'ADD_DATA';
 const REMOVE_CONTACT = 'REMOVE_CONTACT';
-const REMOVE_CATEGORY = 'REMOVE_CATEGORY';
 
 export const categoriesReducer = (state = defaultState, action) => {
     switch(action.type) {
@@ -77,4 +79,3 @@ export const removeActiveStateAction = (payload) => ({ type: REMOVE_ACTIVE_STATE
 export const addDataAction = (payload) => ({ type: ADD_DATA, payload });
 export const removeContactAction = (payload) => ({ type: REMOVE_CONTACT, payload });
 export const removeCategoryAction = (payload) => ({ type: REMOVE_CATEGORY, payload });
-

@@ -92,3 +92,7 @@ td {
 .inl-bl {
     display: inline-block;
 }
+
+.contact-item {
+    cursor: pointer;
+}
